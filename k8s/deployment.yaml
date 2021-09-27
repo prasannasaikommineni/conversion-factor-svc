@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: weather
+  template:
+    metadata:
+      labels:
+        app: weather
+    spec:
+      containers:
+      - name: weather
+        image: docker950/weatherr:v2
+        env:
+          - name: SPRING_CLOUD_CONFIG_URI
+            value: http://config-server.default.svc.cluster.local:8888
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8082
